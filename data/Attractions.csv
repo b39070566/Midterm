@@ -1,0 +1,57 @@
+country,attraction,address,city,transportaion,score,ticket,ticket_price
+Australia,Warner Bros. Movie World,"Pacific Mwy, Oxenford QLD 4210",Gold Coast,Bus,4.1,1,"1,759"
+Australia,Sydney Harbour Bridge,"Sydney Hbr Brg, Sydney NSW",Sydney,"Ferry, Bus, Metro",4.8,0,0
+Australia,Sydney Opera House,"Bennelong Point, Sydney NSW 2000",Sydney,"Bus, Train",4.7,1,"1,000"
+Brazil,Cristo Redentor Rio,"Parque Nacional da Tijuca - Alto da Boa Vista, Rio de Janeiro - RJ",Rio,Bus,4.8,1,363
+Cambodia,nan,nan,nan,nan,nan,nan,nan
+Canada,Stanley park,"Vancouver, BC V6G 1Z4",Vancouver,Bus,4.8,0,0
+Canada,Casa Loma,"1 Austin Terrace, Toronto, ON M5R 1X8",Toronto,"Bus, Metro",4.5,1,962
+Egypt,Egyptian Museum,"El-Tahrir Square, Ismailia, Qasr El Nil, Cairo Governorate 4272083",Cairo,Metro,4.5,1,378
+Egypt,The Great Pyramid of Giza,"Al Haram, Giza Governorate 3512201",Giza,"Bus, Metro",4.6,1,454
+France,Eiffel Tower,"Av. Gustave Eiffel, 75007 Paris",Paris,"Bus, Metro",4.7,1,350
+France,Louvre Museum,"Rue de Rivoli, 75001 Paris",Paris,"Bus, Metro",4.7,1,762
+France,Arc de Triomphe,"Pl. Charles de Gaulle, 75008 Paris",Paris,"Bus, Metro",4.7,1,555
+Germany,Schloss Neuschwanstein,"Neuschwansteinstraße 20, 87645 Schwangau",Schwangau,"Bus, Train",4.6,1,623
+Germany,Berliner Dom,"Am Lustgarten, 10178 Berlin",Berlin,"Bus, Metro, Light Rail, Tram",4.6,1,346
+Germany,Marienplatz,"Marienplatz, 80331 München",Munich,"Metro, Train",3.9,0,0
+Greece,Parthenon,Athens 105 58,Athens,Metro,4.8,1,415
+Greece,Acropolis Museum,"Dionysiou Areopagitou 15, Athens 117 42",Athens,Metro,4.7,1,853
+Indonesia,Waterbom Bali,"Jl. Kartika Plaza, Tuban, Kec. Kuta, Kabupaten Badung, Bali 80361",Bali,Bus,4.7,1,"1,131"
+Indonesia,Pura Tanah Lot,"Beraban, Kediri, Tabanan Regency, Bali 82121",Bali,Bus,4.6,1,61
+Italy,Colosseo,"Piazza del Colosseo, 1, 00184 Roma RM",Roma,"Bus, Metro",4.7,1,831
+Italy,Duomo di Milano,"P.za del Duomo, 20122 Milano MI",Milano,Metro,4.8,1,900
+Italy,Torre di Pisa,"Piazza del Duomo, 56126 Pisa PI",Pisa,Train,4.7,1,692
+Japan,Sensoji Temple,"2-chōme-3-1 Asakusa, Taito City, Tokyo 111-0032",Tokyo,"Bus, Metro",4.5,0,0
+Japan,Kiyomizudera Temple,"294 Kiyomizu 1 Chome, Higashiyama-ku, Kyoto-shi, Kyoto-fu",Kyoto,"Bus, Metro",4.5,1,63
+Japan,Tokyo Skytree,"1-chōme-1-2 Oshiage, Sumida City, Tokyo 131-0045",Tokyo,"Bus, Metro",4.4,1,801
+Japan,Mount FUJI,"2-5-1, Kamiyoshida, Fujiyoshida, Yamanashi",Yamanashi,"Bus, Metro, Train",4.5,1,210
+Japan,Osaka Castle,"1-1 Ōsakajō, Chuo Ward, Osaka, 540-0002",Osaka,"Bus, Metro",4.4,1,126
+Mexico,Castillo de Chapultepec,"Bosque de Chapultepec I Secc, Miguel Hidalgo, 11580 Mexico City",Mexico City,Bus,4.8,1,385
+Mexico,Chichen Itza,97751 Yucatan,Yucatan,Bus,4.8,1,"2,304"
+Morocco,Hassan II Mosque,"Boulevard de la Corniche, Casablanca 20000",Casablanca,Taxi,4.7,1,1135
+Netherlands,Rijksmuseum,"Museumstraat 1, 1071 XX Amsterdam",Amsterdam,"Bus, Metro, Tram",4.7,1,814
+Netherlands,Paleis Amsterdam,"Nieuwezijds Voorburgwal 147, 1012 RJ Amsterdam",Amsterdam,Tram,4.6,1,434
+New Zealand,Hobbiton Moive Set,"501 Buckland Road, Matamata 3472",Matamata,Shuttle bus,4.7,1,"2,308"
+New Zealand,Waitomo Caves,"39 Waitomo Village Road, Waitomo Caves 3977",Waitomo,Bus,4.5,1,"1,589"
+Scotland,nan,nan,nan,nan,nan,nan,nan
+South African,nan,nan,nan,nan,nan,nan,nan
+South Korea,Gyeongbokgung Palace,"161 Sajik-ro, Jongno District, Seoul",Seoul,"Bus, Metro",4.6,1,70
+South Korea,Lotte World,"240 Olympic-ro, Songpa District, Seoul",Seoul,"Bus, Metro",4.3,1,854
+South Korea,Kwangjang Market,"88 Changgyeonggung-ro, Jongno District, Seoul",Seoul,"Bus, Metro",4.2,0,0
+South Korea,Bukchon Hanok Village,"Gyedong-gil, Jongno District, Seoul",Seoul,"Bus, Metro",4.4,0,0
+Spain,Casa Milà,"Pg. de Gràcia, 92, L'Eixample, 08008 Barcelona",Barcelona,Metro,4.6,1,971
+Spain,Palacio Real de Madrid,Huesca 28071 Madrid,Madrid,Metro,4.7,1,"1,214"
+Thailand,Wat Arun,"158 Thanon Wang Doem, Wat Arun, Bangkok Yai, Bangkok 10600",Bangkok,"BTS, Boat",4.6,1,200
+Thailand,Wat Phra Kaew,"Na Phra Lan Rd, Phra Borom Maha Ratchawang, Phra Nakhon, Bangkok 10200",Bangkok,"BTS, Boat",4.7,1,476
+Thailand,Chatuchak Weekend Market,"587, 10 Kamphaeng Phet 2 Rd, Khwaeng Chatuchak, Chatuchak, Bangkok 10900",Bangkok,"Metro, BTS",4.4,0,0
+Thailand,Maeklong Railway Market,"Mueang Samut Songkhram District, Samut Songkhram 75000",Mae Klong,"Bus, BTS",4.3,0,0
+UK,Tower Bridge,"Tower Bridge Rd, London SE1 2UP",London,Metro,4.8,1,558
+UK,British Museum,"Great Russell St, London WC1B 3DG",London,"Bus, Metro",4.7,0,0
+UK,Buckingham Palace,"Buckingham Gate, London, SW1A 1AA",London,"Bus, Metro",4.5,1,"1,330"
+UK,Big Ben,"173 Cleveland Street, London, W1T 6QR",London,"Bus, Metro",4.5,1,1247
+UK,Stonehenge,Salisbury SP4 7DE,Amesbury,"Train, Shuttle Bus",4.5,1,1056
+United Arab Emirates,Burj Khalifa Tower,1 Sheikh Mohammed bin Rashid Blvd,Dubai,Metro,4.7,1,"1,389"
+USA,Metropolitan Museum of Art,"1000 5th Ave, New York, NY 10028",New York,"Bus, Metro",4.8,1,962
+USA,Statue of Liberty,"Liberty Island, New York, NY 10004",New York,"Bus, Metro, Boat",4.7,1,577
+USA,Central Park,"59th 110th St · Manhattan, NY 10019",New York,"Bus, Metro",4.8,0,0
+USA,National 911 Memorial & Museum,"180 Greenwich St, New York, NY 10007",New York,"Bus, Metro",4.8,1,727

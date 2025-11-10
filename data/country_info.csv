@@ -1,0 +1,24 @@
+﻿Country,Continent,Currency,Travel Alert,Safety Index,Crime_index,CPI,PCE,Exchange_rate,Visa_exempt_entry
+UK,Western Europe,GBP,灰色,71.0,29.0,120.5,115.3,41.58,1
+Thailand,Southeast Asia,THB,黃色,43.0,57.0,85.3,82.4,0.95,1
+Indonesia,Southeast Asia,IDR,黃色,52.0,48.0,75.2,71.8,0.002,1
+USA,North America,USD,灰色,52.0,48.0,115.8,110.5,32.08,1
+Japan,East Asia,JPY,灰色,79.0,21.0,102.7,100.2,0.21,1
+France,Western Europe,EUR,灰色,66.0,34.0,108.4,104.8,34.64,1
+Australia,Oceania,AUD,灰色,74.0,26.0,109.6,106.3,21.21,0
+Brazil,South America,BRL,橙色,47.0,53.0,72.1,68.5,5.62,0
+Netherlands,Western Europe,EUR,灰色,73.0,27.0,104.5,102.3,34.64,1
+United Arab Emirates,Middle East,AED,橙色,60.0,40.0,105.7,103.5,8.73,0
+Mexico,North America,MXN,橙色,54.0,46.0,85.1,80.9,1.61,1
+Spain,Southern Europe,EUR,灰色,70.0,30.0,108.3,105.6,34.64,1
+Germany,Western Europe,EUR,灰色,65.0,35.0,105.2,103.9,34.64,1
+Morocco,North Africa,MAD,黃色,54.0,46.0,87.6,83.5,3.24,0
+Scotland,Western Europe,GBP,灰色,72.0,28.0,120.5,115.3,41.58,1
+Italy,Southern Europe,EUR,灰色,67.0,33.0,109.2,106.4,34.64,1
+Greece,Southern Europe,EUR,黃色,60.0,40.0,95.4,91.7,34.64,1
+Egypt,North Africa,EGP,橙色,53.0,47.0,70.6,67.9,0.66,0
+Canada,North America,CAD,灰色,62.0,38.0,105.1,101.7,23.1,1
+South Korea,East Asia,KRW,灰色,67.0,33.0,104.2,101.2,0.023,1
+Cambodia,Southeast Asia,KHR,黃色,44.0,56.0,78.5,75.4,0.0079,0
+South Africa,Southern Africa,ZAR,橙色,41.0,59.0,65.3,62.8,1.82,0
+New Zealand,Oceania,NZD,灰色,74.0,26.0,106.7,103.8,19.17,1
