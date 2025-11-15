@@ -7,6 +7,7 @@ import os
 
 # =======================================
 # 讀取四個 CSV 並統一欄位
+# 我是嘉宏
 # =======================================
 def load_data() -> pd.DataFrame:
     base_dir = os.path.dirname(__file__)
