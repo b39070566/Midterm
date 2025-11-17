@@ -1,0 +1,213 @@
+import os
+import requests
+
+from dash import Dash, html, dcc, Input, Output, State
+
+# 建議用環境變數存放 Google API Key
+# Windows PowerShell 範例：
+#   $env:GOOGLE_API_KEY="你的金鑰"
+GOOGLE_API_KEY = os.environ.get("GOOGLE_API_KEY", "YOUR_API_KEY_HERE")
+
+# ========= 工具函式 =========
+
+def geocode_place(place_name: str):
+    """
+    用 Geocoding API 把地點名稱轉成 (lat, lng)
+    """
+    url = "https://maps.googleapis.com/maps/api/geocode/json"
+    params = {
+        "address": place_name,
+        "key": GOOGLE_API_KEY
+    }
+    resp = requests.get(url, params=params)
+    data = resp.json()
+
+    if data.get("status") != "OK" or not data.get("results"):
+        return None, None
+
+    location = data["results"][0]["geometry"]["location"]
+    return location["lat"], location["lng"]
+
+
+def get_avg_restaurant_price_level(lat: float, lng: float):
+    """
+    用 Places API 搜尋附近餐廳，計算平均 price_level (0~4)
+    """
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json"
+    params = {
+        "location": f"{lat},{lng}",
+        "radius": 3000,      # 以 3 公里範圍為例
+        "type": "restaurant",
+        "key": GOOGLE_API_KEY
+    }
+    resp = requests.get(url, params=params)
+    data = resp.json()
+
+    results = data.get("results", [])
+    levels = [p.get("price_level") for p in results if p.get("price_level") is not None]
+
+    if not levels:
+        return None
+
+    avg_level = sum(levels) / len(levels)
+    return avg_level
+
+
+def estimate_daily_cost_from_price_level(avg_level: float):
+    """
+    超粗略估算：用 price_level 轉成每日預估花費
+    （只是示範公式，日後可以自己調整）
+
+    假設：
+    - base_food = 300 元（超便宜吃法）
+    - 每增加 1 個 price_level，平均餐費 +250
+    - 一天算 2 餐主要餐 + 其他支出 50%（交通、小景點等）
+    """
+    base_food = 300
+    per_level = 250
+
+    main_meal_cost = base_food + per_level * avg_level  # 一餐平均
+    food_per_day = main_meal_cost * 2                   # 兩餐
+    other_cost = food_per_day * 0.5                     # 其他支出
+
+    total = food_per_day + other_cost
+    return round(total)
+
+
+# ========= Dash App =========
+
+app = Dash(__name__)
+
+app.layout = html.Div(
+    style={
+        "maxWidth": "800px",
+        "margin": "0 auto",
+        "fontFamily": "Arial, sans-serif",
+        "padding": "20px"
+    },
+    children=[
+        html.H1("旅遊預算估算 Demo（Dash + Google API）"),
+
+        html.Div(
+            style={"marginBottom": "15px"},
+            children=[
+                html.Label("想去的地點（城市 / 區域）"),
+                dcc.Input(
+                    id="destination-input",
+                    type="text",
+                    placeholder="例如：Tokyo, Osaka, Paris, 高雄",
+                    style={"width": "100%", "padding": "8px"}
+                ),
+            ],
+        ),
+
+        html.Div(
+            style={"marginBottom": "15px"},
+            children=[
+                html.Label("每日預算金額（TWD）"),
+                dcc.Input(
+                    id="budget-input",
+                    type="number",
+                    placeholder="例如：2000",
+                    style={"width": "100%", "padding": "8px"}
+                ),
+            ],
+        ),
+
+        html.Button(
+            "開始估算",
+            id="submit-button",
+            n_clicks=0,
+            style={
+                "padding": "10px 20px",
+                "fontSize": "16px",
+                "cursor": "pointer"
+            }
+        ),
+
+        html.Hr(),
+
+        html.Div(id="result-container")
+    ]
+)
+
+
+@app.callback(
+    Output("result-container", "children"),
+    Input("submit-button", "n_clicks"),
+    State("destination-input", "value"),
+    State("budget-input", "value")
+)
+def update_result(n_clicks, destination, budget):
+    # 一開始沒按按鈕，不顯示任何東西
+    if n_clicks == 0:
+        return ""
+
+    # 基本輸入檢查
+    if not destination:
+        return html.Div(
+            "請輸入目的地。",
+            style={"color": "red"}
+        )
+
+    try:
+        budget = int(budget)
+    except (TypeError, ValueError):
+        return html.Div(
+            "預算格式有問題，請輸入整數金額。",
+            style={"color": "red"}
+        )
+
+    # 1. Geocoding：把地點轉成經緯度
+    lat, lng = geocode_place(destination)
+    if lat is None or lng is None:
+        return html.Div(
+            f"找不到地點：{destination}，請確認輸入是否正確。",
+            style={"color": "red"}
+        )
+
+    # 2. Places API：查附近餐廳 price_level
+    avg_price_level = get_avg_restaurant_price_level(lat, lng)
+    if avg_price_level is None:
+        return html.Div(
+            "附近沒有取得任何餐廳的 price_level 資訊，暫時無法估算。",
+            style={"color": "red"}
+        )
+
+    # 3. 估算每日花費
+    estimated_daily_cost = estimate_daily_cost_from_price_level(avg_price_level)
+
+    # 4. 回傳一個排版好的區塊
+    suggestion_text = (
+        "✅ 以 Google Places 附近餐廳價格推估，你的預算「看起來夠用」。"
+        if budget >= estimated_daily_cost
+        else "⚠️ 以 Google Places 附近餐廳價格推估，你的預算「可能偏緊」，建議提高預算或調整花費模式。"
+    )
+
+    suggestion_color = "green" if budget >= estimated_daily_cost else "orange"
+
+    return html.Div(
+        style={
+            "border": "1px solid #ccc",
+            "borderRadius": "8px",
+            "padding": "15px",
+            "backgroundColor": "#f9f9f9"
+        },
+        children=[
+            html.H2("估算結果"),
+            html.P(f"目的地：{destination}"),
+            html.P(f"餐廳平均 price_level：{round(avg_price_level, 2)}（0=最便宜，4=最貴）"),
+            html.P(f"估算每日花費：約 {estimated_daily_cost} 元（TWD）"),
+            html.P(f"你的每日預算：{budget} 元（TWD）"),
+            html.P(
+                suggestion_text,
+                style={"color": suggestion_color, "fontWeight": "bold"}
+            ),
+            html.Small("※ 僅為示意估算，實際花費會受到匯率、住宿、交通、旅遊型態等影響。")
+        ]
+    )
+
+
+if __name__ == "__main__":
+    # debug=True 方便開發時看錯誤
+    app.run_server(debug=True)
