@@ -5,14 +5,15 @@ import json
 
 app = dash.Dash(__name__)
 
-API_KEY = ''  # 請替換成你的Google Maps API Key
+API_KEY = '' 
+ # 換你的 Google Maps API Key
 
 app.layout = html.Div([
     dcc.Input(id='address', type='text', placeholder='輸入地址...', style={'fontSize': 20}),
     dcc.Input(id='budget', type='number', placeholder='預算上限', style={'fontSize': 20}),
     html.Button('查詢', id='search-btn', style={'fontSize': 20}),
     html.Div(id='result', style={'fontSize': 20}),
-    dcc.Checklist(id='place-selector', options=[], value=[]),  # 這行一定要加在 layout 中
+    dcc.Checklist(id='place-selector', options=[], value=[]),
     dcc.Store(id='all-place-details', data={}),
     html.Div(id='budget-warning', style={'color': 'red', 'marginTop': '20px', 'fontSize': 20}),
 ], style={'fontSize': 60})
@@ -25,7 +26,7 @@ def get_latlng(address, apikey):
     loc = resp['results'][0]['geometry']['location']
     return loc['lat'], loc['lng']
 
-def search_places(lat, lng, apikey, radius=300, types='restaurant'):
+def search_places(lat, lng, apikey, radius=1000, types='restaurant'):
     resp = requests.get(
         'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
         params = {
@@ -37,17 +38,6 @@ def search_places(lat, lng, apikey, radius=300, types='restaurant'):
     ).json()
     print('Nearby API response:', resp)  
     return resp.get('results', [])
-
-def get_place_detail(place_id, apikey):
-    resp = requests.get(
-        'https://maps.googleapis.com/maps/api/place/details/json',
-        params = {
-            'place_id': place_id,
-            'fields': 'place_id,name,price_level,price_range,rating,formatted_address,type',
-            'key': apikey
-        }
-    ).json()
-    return resp.get('result', {})
 
 def price_level_by_budget(budget):
     if budget is None:
@@ -72,7 +62,6 @@ def within_budget(price_range, budget):
     except Exception:
         return False
 
-# 搜尋並回傳結果＋存細節
 @app.callback(
     Output('result', 'children'),
     Output('all-place-details', 'data'),
@@ -98,21 +87,24 @@ def suggest(n, address, budget):
     place_details_dict = {}
 
     for p in nearby:
-        detail = get_place_detail(p['place_id'], API_KEY)
-        if not detail:
-            continue
+        place_details_dict[p['place_id']] = p
+        pl = p.get('price_level')
+        print(f"店名: {p.get('name','未知')}, price_level={pl} ({type(pl)}), 預算等級={max_price_level}")
+        try:
+            pl_int = int(pl) if pl is not None else None
+        except Exception as e:
+            print(f"型別轉換失敗: {e}")
+            pl_int = None
 
-        place_details_dict[detail['place_id']] = detail
-
-        if 'price_level' in detail and detail['price_level'] <= max_price_level:
-            ann = f"{detail.get('name','未知')} - 地址：{detail.get('formatted_address','無')} - 價位等級 {detail.get('price_level')} - 評分 {detail.get('rating','無')}"
-            results.append({'label': ann, 'value': detail['place_id']})
-        elif 'price_range' in detail and within_budget(detail['price_range'], budget):
-            ann = f"{detail.get('name','未知')} - 地址：{detail.get('formatted_address','無')} - 價格區間 {detail.get('price_range')} - 評分 {detail.get('rating','無')}"
-            results.append({'label': ann, 'value': detail['place_id']})
+        if pl_int is not None and pl_int <= max_price_level:
+            ann = f"{p.get('name','未知')} - 地址：{p.get('vicinity','無')} - 價位等級 {pl_int} - 評分 {p.get('rating','無')}"
+            results.append({'label': ann, 'value': p['place_id']})
+        elif 'price_range' in p and within_budget(p['price_range'], budget):
+            ann = f"{p.get('name','未知')} - 地址：{p.get('vicinity','無')} - 價格區間 {p['price_range']} - 評分 {p.get('rating','無')}"
+            results.append({'label': ann, 'value': p['place_id']})
 
     if not results:
-        return '沒有符合預算的行程建議', {}
+        return '附近有店家，但 "價位等級" 欄位出現型別錯誤或缺值，請檢查API回傳。', {}
 
     return dcc.Checklist(
         options=results,
@@ -120,7 +112,6 @@ def suggest(n, address, budget):
         id='place-selector'
     ), place_details_dict
 
-# 監聽所選景點總價是否超預算
 @app.callback(
     Output('budget-warning', 'children'),
     Input('place-selector', 'value'),
@@ -135,7 +126,6 @@ def check_budget(selected_places, budget, all_details):
     for place_id in selected_places:
         detail = all_details.get(place_id, {})
         cost = 0
-        # 以 price_range 假設計算平均數，無則用 price_level 換算
         pr = detail.get('price_range')
         if pr and '-' in pr:
             try:
@@ -146,11 +136,13 @@ def check_budget(selected_places, budget, all_details):
                 cost = 0
         else:
             pl = detail.get('price_level')
-            if pl:
-                # 簡單換算
+            try:
+                pl_int = int(pl) if pl is not None else None
+            except:
+                pl_int = None
+            if pl_int:
                 level_price_map = {1: 100, 2: 300, 3: 600, 4: 1000}
-                cost = level_price_map.get(pl, 0)
-
+                cost = level_price_map.get(pl_int, 0)
         total_cost += cost
 
     if total_cost > budget:
@@ -159,3 +151,4 @@ def check_budget(selected_places, budget, all_details):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
