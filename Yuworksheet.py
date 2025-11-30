@@ -5,7 +5,7 @@ import json
 
 app = dash.Dash(__name__)
 
-API_KEY = '' 
+API_KEY = 'AIzaSyCvjWw6QGz1MYnMEmk9pSqmTod0zH5edLc' 
  # 換你的 Google Maps API Key
 
 app.layout = html.Div([
@@ -26,31 +26,35 @@ def get_latlng(address, apikey):
     loc = resp['results'][0]['geometry']['location']
     return loc['lat'], loc['lng']
 
-def search_places(lat, lng, apikey, radius=1000, types='restaurant'):
+def search_places(lat, lng, apikey, radius=1000):
+    place_types = 'restaurant|cafe|bar|tourist_attraction'
     resp = requests.get(
         'https://maps.googleapis.com/maps/api/place/nearbysearch/json',
         params = {
             'location': f'{lat},{lng}',
             'radius': radius,
-            'type': types,
+            'type': place_types, # 多種類型用 | 串起來
             'key': apikey
         }
     ).json()
     print('Nearby API response:', resp)  
-    return resp.get('results', [])
+    return resp.get('results', [])   #取出'results'，'results' 不存在，函式會回傳一個空的列表（[]）
+
 
 def price_level_by_budget(budget):
     if budget is None:
         return 4
-    if budget <= 100:
+    if budget <= 200:
         return 1
-    elif budget <= 300:
+    elif budget <= 500:
         return 2
-    elif budget <= 600:
+    elif budget <= 1000:
         return 3
     else:
         return 4
 
+
+#判斷「餐廳的最低價格」是否在使用者的預算以內。
 def within_budget(price_range, budget):
     if not price_range or budget is None:
         return False
@@ -71,7 +75,7 @@ def within_budget(price_range, budget):
 )
 def suggest(n, address, budget):
     if not address or not budget:
-        return '請輸入地址與預算', {}
+        return '請輸入地址與預算', {}  #第二個值 {} 會傳給 Output('all-place-details', 'data')
 
     try:
         lat, lng = get_latlng(address, API_KEY)
