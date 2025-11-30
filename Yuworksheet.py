@@ -5,7 +5,7 @@ import json
 
 app = dash.Dash(__name__)
 
-API_KEY = 'AIzaSyCvjWw6QGz1MYnMEmk9pSqmTod0zH5edLc' 
+API_KEY = '' 
  # 換你的 Google Maps API Key
 
 app.layout = html.Div([
